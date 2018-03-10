@@ -25,7 +25,7 @@ const reqPost = async function(req, res) {
     values = values.slice(0,-1) + ")";
     console.log("responder >> ", values);
 
-    await db.query("INSERT INTO TIN (id, first_name, last_name, lng, lat) VALUES " + values)
+    await db.query("INSERT INTO Tin (id, first_name, last_name, lng, lat) VALUES " + values)
       .then( result => {
         console.log("Inserted, ", result);
         res.send(responder)
