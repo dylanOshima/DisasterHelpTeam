@@ -21,7 +21,6 @@ connection.connect(function(err) {
   console.log('Connected to database.');
 });
 
-
 module.exports.query = function( sql, args ) {
   console.log("QUERYING");
   return new Promise( ( resolve, reject ) => {
