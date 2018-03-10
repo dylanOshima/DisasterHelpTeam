@@ -5,11 +5,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var db = require('./database/db');
+var db = require('./db');
 
-//Routes
-var index = require('./routes/index');
-var users = require('./routes/users');
+//Models
+var Responder = require('./models/responder');
+var Tin = require('./models/tin');
 
 var app = express();
 
@@ -25,8 +25,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
+app.get('/', (req, res) => {
+  res.json({title: 'hello world'});
+})
+
+app.post('/responder', Responder.reqPost);
+app.get('/responders', Responder.reqGet);
+app.post('/tin', Tin.reqPost);
+// app.get('/tin', Tin.reqGet)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
