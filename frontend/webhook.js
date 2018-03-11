@@ -1,6 +1,6 @@
 http = require('http')
 const Bot = require('messenger-bot')
-const Token = 'EAACceGmDZCd4BAA2OqbE5CWuLfJi8rtrZB3lCoFZBzJMwZB7KZC5l8rxzBGVsr9uEREs1JtY6gc2Y4fHkEqfyPV3mlKnqGcsfodrwvtUhWiGGsTZAGwTxT9SWka23V8dc4RFDjzccPXbwQx3e4lf09zfqHc2CgJvXmT55aY3RJuAZDZD'
+const Token = 'EAAInIgwoANcBACqeDEuTmW7PSeOoFqcEwGBSC8RK89oQ10LQCmczK4idZBxNgMKierVWZAucV22qsA2SPfcRRqZBztXi5lmCWqLXPE49fbkzQVu1vXwjZBildBkKctctoxCIfZBWDmR0OVgtT5k71NVv0Lmiyv5tuRZAZAPcUS0GAZDZD'
 
 const REQUEST_NEED = "You have been registered as someone in need of help! We will match you with a responder soon!"
 const REQUEST_RESPOND = "Thank you! You are being registered as a respondent and will soon receive a mission!";
@@ -29,29 +29,51 @@ const apiaiApp = require('apiai')('4ae9913945c14cac91644104feff9b6b');
 function sendMessage(event) {
     var sender = event.sender.id;
     var text = event.message.text;
-    
+        
     var apiai = apiaiApp.textRequest(text, {
 	sessionId: 'tabby_cat' // use any arbitrary id
     });
     
-    apiai.on('response', (response) => {	
+    console.log("sender: ", sender," text: ", text);
+ 
+    apiai.on('response', function(response) {	
 	var aiText = response.result.fulfillment.speech;
 
 	if(aiText === REQUEST_NEED) {
 	    // GET https://graph.facebook.com/v2.6/<USER_ID>?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=<PAGE_ACCESS_TOKEN>
-	    request({
-				url: 'https://graph.facebook.com/v2.6/${event.sender.id}?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=${Token}',
-				qs: {access_token: Token},
+		request({
+				url: 'https://graph.facebook.com/v2.6/'+sender+'?fields=first_name,last_name,location&access_token='+Token,
+                             	qs: {access_token: Token},
 				method: 'GET'
-		}, (error, response) => {
+		}, (error, response, body) => {
 				if (error) {
 			console.log('Error sending message: ', error);
 				} else if (response.body.error) {
 			console.log('Error: ', response.body.error);
+				} else {
+				console.log(body);
+			
+				var port = 5001
+
+				request({
+    					url: 'http://localhost:'+port+'/responder',
+					method: 'POST',
+    					json: JSON.parse(body)
+				}, (error, response, body) => {
+				if (error) {
+					console.log('Error sending message: ', error);
+				} else if (response.body.error) {
+					console.log('Error: ', response.body.error);
+				} else {
+					console.log("Body: ", body);
 				}
+			}
+			);
+
+
+
+			} 
 		});
-		
-		console.log(request.body)
 		
 		// Parse body and put to db
 		
