@@ -21,7 +21,7 @@ request({
      return body2;
    }
  }).then((dt) => {
-     responders = dt;
+     responders = dt[1];
 })
 
 bot.on('error', (err) => {
@@ -86,9 +86,7 @@ async function sendMessage(event) {
      	  console.log('Error sending message: ', error);
   	  } else if (response.body.error) {
   	    console.log('Error: ', response.body.error);
-	  } else {
- 	     console.log("Body1: ", responders);
-   	     
+	  } else if(responders !== undefined){ 
 	     let resp;
 	     responders.forEach((obj) => {
     	    	if (obj.status === 0) {
@@ -96,7 +94,7 @@ async function sendMessage(event) {
 		 resp = obj;
 		 return resp;
        	 	}
-     	 	})
+     	     })
 	  }
       	}).then((resp) => {
 		request({
