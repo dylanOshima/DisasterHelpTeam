@@ -7,6 +7,7 @@ var settings = {
   port     : 3306,
   password : process.env.DB_PASSWORD,
   database : "UoE_Hackathon"
+  // "connectTimeout": 30000
 };
 
 var connection = mysql.createConnection( settings );
