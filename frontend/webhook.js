@@ -1,11 +1,11 @@
-const http = require('http')
+http = require('http')
 const Bot = require('messenger-bot')
 const Token = 'EAACceGmDZCd4BAA2OqbE5CWuLfJi8rtrZB3lCoFZBzJMwZB7KZC5l8rxzBGVsr9uEREs1JtY6gc2Y4fHkEqfyPV3mlKnqGcsfodrwvtUhWiGGsTZAGwTxT9SWka23V8dc4RFDjzccPXbwQx3e4lf09zfqHc2CgJvXmT55aY3RJuAZDZD'
 
 const REQUEST_NEED = "You have been registered as someone in need of help! We will match you with a responder soon!"
 const REQUEST_RESPOND = "Thank you! You are being registered as a respondent and will soon receive a mission!";
 
-let bot = new Bot({
+var bot = new Bot({
     token: Token,
     verify: 'tuxedo_cat',
     app_secret: ''
@@ -27,20 +27,20 @@ const request = require('request');
 const apiaiApp = require('apiai')('4ae9913945c14cac91644104feff9b6b');
 
 function sendMessage(event) {
-    let sender = event.sender.id;
-    let text = event.message.text;
+    var sender = event.sender.id;
+    var text = event.message.text;
     
-    let apiai = apiaiApp.textRequest(text, {
+    var apiai = apiaiApp.textRequest(text, {
 	sessionId: 'tabby_cat' // use any arbitrary id
     });
     
     apiai.on('response', (response) => {	
-	let aiText = response.result.fulfillment.speech;
+	var aiText = response.result.fulfillment.speech;
 
 	if(aiText === REQUEST_NEED) {
 	    // GET https://graph.facebook.com/v2.6/<USER_ID>?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=<PAGE_ACCESS_TOKEN>
 	    request({
-				url: 'https://graph.facebook.com/v2.6/${event.sender.id}?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=${TOKEN}',
+				url: 'https://graph.facebook.com/v2.6/${event.sender.id}?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=${Token}',
 				qs: {access_token: Token},
 				method: 'GET'
 		}, (error, response) => {
@@ -61,7 +61,7 @@ function sendMessage(event) {
 	if(aiText === REQUEST_RESPOND) {
 	    // GET https://graph.facebook.com/v2.6/<USER_ID>?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=<PAGE_ACCESS_TOKEN>
 	    request({
-				url: 'https://graph.facebook.com/v2.6/${event.sender.id}?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=${TOKEN}',
+				url: 'https://graph.facebook.com/v2.6/${event.sender.id}?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=${Token}',
 				qs: {access_token: Token},
 				method: 'GET'
 		}, (error, response) => {
@@ -107,7 +107,7 @@ function sendMessage(event) {
 const http = require('http')
 const Bot = require('messenger-bot')
 const Token = 'EAACceGmDZCd4BAA2OqbE5CWuLfJi8rtrZB3lCoFZBzJMwZB7KZC5l8rxzBGVsr9uEREs1JtY6gc2Y4fHkEqfyPV3mlKnqGcsfodrwvtUhWiGGsTZAGwTxT9SWka23V8dc4RFDjzccPXbwQx3e4lf09zfqHc2CgJvXmT55aY3RJuAZDZD'
-let bot = new Bot({
+var bot = new Bot({
   token: Token,
   verify: 'tuxedo_cat',
   app_secret: ''
@@ -117,7 +117,7 @@ const NEED_INTENT = 'register_need';  // the action name from the Dialogflow int
 const REGISTER_INTENT = 'register_responder';  // the action name from the Dialogflow intent
 const DialogflowApp = require('actions-on-google').DialogflowApp;
 const app = new DialogflowApp({request: bot.request, response: bot.response});
-let actionMap = new Map();
+var actionMap = new Map();
 actionMap.set(NEED_INTENT, handleRegisterNeed);
 actionMap.set(REGISTER_INTENT, handleRegisterResponder);
 app.handleRequest(actionMap);
@@ -132,7 +132,7 @@ bot.on('error', (err) => {
     console.log("FUCK!", err.message)
 })
 bot.on('message', (payload, reply) => {
-    let text = sendMessage(payload)
+    var text = sendMessage(payload)
     bot.getProfile(payload.sender.id, (err, profile) => {
 	
 	console.log("Bitch", text, payload)
