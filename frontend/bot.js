@@ -1,31 +1,26 @@
-const http = require('http')
-const Bot = require('messenger-bot')
+let request = require('request');
+const Token =
+	'EAAInIgwoANcBACqeDEuTmW7PSeOoFqcEwGBSC8RK89oQ10LQCmczK4idZBxNgMKierVWZAucV22qsA2SPfcRRqZBztXi5lmCWqLXPE49fbkzQVu1vXwjZBildBkKctctoxCIfZBWDmR0OVgtT5k71NVv0Lmiyv5tuRZAZAPcUS0GAZDZD';
 
-const port = 5000;
+let id = '1907459852661174';
 
-let bot = new Bot({
-  token: 'EAAInIgwoANcBAK9EtwDBzoaL0EI5j8BAZCaXu9VX5vQUjnQJtywnDMLf8oyTytOGj4fE113FXL8CUP6YSA90la8OENfA6sCLIvGpNIvx5vsvNiUsWnCG5J6Uic5OMpMANa0bvfWXTJ60r5zHK9urPXDztu9y4umctgd9UUQZDZD',
-  verify: 'tuxedo_cat',
-  app_secret: ''
-})
+console.log('https://graph.facebook.com/v2.6/'+id+'?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token='+Token)
 
-bot.on('error', (err) => {
-  console.log(err.message)
-})
+var port = 3000;
 
-bot.on('message', (payload, reply) => {
-  let text = payload.message.text
-
-  bot.getProfile(payload.sender.id, (err, profile) => {
-    if (err) throw err
-
-    reply({ text }, (err) => {
-      if (err) throw err
-
-      console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
-    })
-  })
-})
-
-http.createServer(bot.middleware()).listen(port)
-console.log('Echo bot server running at port ' + port + '.')
+request(
+	{
+    url: 'http://localhost:'+port+'/responders',
+		qs: { access_token: Token },
+		method: 'POST',
+    json: JSON.body
+	}, (error, response, body) => {
+		if (error) {
+			console.log('Error sending message: ', error);
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error);
+		} else {
+			console.log("Body: ", body);
+		}
+	}
+);

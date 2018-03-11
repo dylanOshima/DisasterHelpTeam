@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 app.post('/responder', Responder.reqPost);
 app.get('/responders', Responder.reqGet);
 app.post('/tin', Tin.reqPost);
-// app.get('/tin', Tin.reqGet)
+app.post('/makePair', Tin.reqMakePair)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

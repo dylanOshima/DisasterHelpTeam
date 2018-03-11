@@ -25,7 +25,7 @@ const reqPost = async function(req, res) {
     values = values.slice(0,-1) + ")";
     console.log("responder >> ", values);
 
-    await db.query("INSERT INTO TIN (id, first_name, last_name, lng, lat) VALUES " + values)
+    await db.query("INSERT INTO Tin (id, first_name, last_name, lng, lat) VALUES " + values)
       .then( result => {
         console.log("Inserted, ", result);
         res.send(responder)
@@ -38,3 +38,29 @@ const reqPost = async function(req, res) {
 }
 
 module.exports.reqPost = reqPost;
+
+const reqMakePair = async function(req, res) {
+    let pairData = req.body;
+    console.log("pairing >> ", pairData);
+
+    var values = "(";
+    for (var property in pairData) {
+      if (pairData.hasOwnProperty(property)) {
+        values += "'" + pairData[property] + "',";
+      }
+    }
+    values = values.slice(0,-1) + ")";
+
+    await db.query("INSERT INTO RespondPairs (id, responder_id, tin_id) VALUES " + values)
+      .then( result => {
+        console.log("Inserted, ", result);
+        res.send(pairData)
+      }).catch( err => {
+        console.error("Query Failed: ", err);
+        db.close();
+      });
+
+    res.send("Error")
+}
+
+module.exports.reqMakePair = reqMakePair;
