@@ -1,0 +1,38 @@
+﻿Houston Flooding:
+* Jeffrey is from Texas 
+* 9 trillion gallons of rain
+* With rainfall accumulation measured at 1.3208 meters in 5 days
+* More than 13,000 rescues displacing 17,000 to shelters
+* 44 died 
+* Thousands of volunteers from around the country 
+* * The best organization for matching those in need with those rescuing was volunteers manually doing do from their cell phones
+* Our Project:
+* Tools:
+   * Amazon Web Services
+      * EC2 Server - backend
+      * RDS Mysql Database - Managing users and supplies
+   * Dialogflow
+      * Natural Language Processor / Chatbot platform
+   * Facebook Messager 
+      * Chatbot platform, providing interface with bot 
+* Languages / lang tools:
+   * Node.js: Backend api and full functionality
+   * Ngroks: Reverse Proxy, allowing for tunneling between FB platform and EC2 node.js service
+
+
+// DEMO:
+* Requests:
+   * Intro: “Hello, is this the disaster support?”
+   * Register Need: “I need help!  Please send someone”
+   * Register Support: “I would like to register as a responder!”
+   * // Send notification of match to both users
+   * Donate supplies: “My family has extra food and water we can donate! “
+
+
+
+
+Future Goals:
+* Organization of Supplies
+* Connect to FB Emergency Reporting
+   * So people can mark themselves safe
+* Allowing users to setup their own local emergencies
