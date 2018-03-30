@@ -45,7 +45,7 @@ function getFBInfo() {
     }).then((dt) => { human = dt });
 }
 
-function getData() {
+function getData(callback) {
     request({
 	url: 'http://localhost:' + port + '/responders',
 	method: 'GET'
@@ -55,7 +55,10 @@ function getData() {
 	} else {
 	    return body2;
 	}
-    }).then((dt) => { responders = dt[1]; });
+    }).then((dt) => {
+	responders = dt[1];
+	callback();
+    });
 }
 
 function aiNeeds() {
@@ -150,8 +153,7 @@ function sendMessage(event) {
     apiai.on('response', function(response) {
 	aiText = response.result.fulfillment.speech;
 
-	// TODO: Get the data before POSTing request
-	getData();
+	getData(function(){});
 	if (aiText === REQUEST_NEED) {
 	    aiNeeds();
 	}
